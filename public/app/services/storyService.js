@@ -1,23 +1,36 @@
 angular.module('storyService', [])
 
 
-.factory('Story', function($http) {
+.factory('Story', function($http, $window) {
 
 	// get all approach
 	var storyFactory = {};
+	
+	var generateReq = function(method, url, data) {
+            var req = {
+              method: method,
+              url: url,
+              headers: {
+                'x-access-token': $window.localStorage.getItem('token')
+              };
+            if (method === 'POST') {
+            	req.data = data;
+            }
+            return req;
+        };
 
 	storyFactory.all = function() {
-		return $http.get('/api/');
-	}
+		return $http(generateReq('GET', '/api/'));
+	};
 
 
 	storyFactory.create = function(storyData) {
-		return $http.post('/api/', storyData);
-	}
+		return $http(generateReq('POST', '/api/', storyData));
+	};
 
 	storyFactory.getSingleStory = function(user_name, story_id) {
-		return $http.get('/api/' + user_name + story_id);
-	}
+		return $http(generateReq('GET', '/api/' + user_name + story_id));
+	};
 
 	return storyFactory;
 
