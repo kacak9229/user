@@ -1,7 +1,7 @@
 angular.module('storyService', [])
 
 
-.factory('Story', function($http) {
+.factory('Story', function($http, $window) {
 
 	// get all approach
 	var storyFactory = {};
