@@ -19,11 +19,7 @@ angular.module('userService', [])
     var req = {
         method: 'POST',
         url: '/api/signup',
-                    data: userData,
-        headers: {
-            'x-access-token': $window.localStorage.getItem('token')
-        }
-
+        data: userData
     }
     return $http(req);
 }
