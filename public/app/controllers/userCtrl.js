@@ -54,14 +54,14 @@ angular.module('userCtrl', ['userService'])
 
 		// use the create function in the userService
 		User.create(vm.userData)
-			.then(function(data) {
+			.then(function(response) {
 				vm.processing = false;
 
 				// clear the form
 				vm.userData = {};
-				vm.message = data.message;
+				vm.message = response.data.message;
 
-				$window.localStorage.setItem('token', data.token);
+				$window.localStorage.setItem('token', response.data.token);
 				$location.path('/');
 
 				 
