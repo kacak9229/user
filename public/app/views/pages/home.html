@@ -57,18 +57,18 @@
  							<span class="label label-info">
  								78</span>
  							</div>
- 							<div class="panel-body" ng-repeat="each in story.stories">
+ 							<div class="panel-body" ng-repeat="story in stories">
  								<ul class="list-group">
  									<li class="list-group-item">
  										<div class="row">
  												<div class="col-xs-10 col-md-11">
  													<div>
  															<div class="mic-info">
- 																<a href="#">{{ main.user.username }}</a> {{ each.createdAt }}
+ 																<a href="#">{{ main.user.username }}</a> {{ story.createdAt }}
  															</div>
  														</div>
  														<div class="comment-text">
- 															<a href="/{{ main.user.name }}/{{ each._id }}"><h4>{{ each.content }}</h4></a>
+ 															<a href="/{{ main.user.name }}/{{ story._id }}"><h4>{{ story.content }}</h4></a>
  														</div>
  													</div>
  												</div>

@@ -2,19 +2,19 @@
 angular.module('storyCtrl', ['storyService'])
 
 
-.controller('StoryController', function(Story, $routeParams) {
+.controller('StoryController', function(Story, $routeParams, $scope) {
 
 	var vm = this;
 
 	Story.all()
 		.success(function(data) {
-			vm.stories = data;
+			$scope.stories = data;
 		});
 
 
 	Story.getSingleStory($routeParams.user_name, $routeParams.story_id)
 		.then(function(data) {
-			vm.storyData = data;
+			$scope.storyData = data;
 		});
 
 	vm.createStory = function() {
