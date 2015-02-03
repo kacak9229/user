@@ -13,7 +13,7 @@ angular.module('storyCtrl', ['storyService'])
 
 
 	Story.getSingleStory($routeParams.user_name, $routeParams.story_id)
-		.then(function(data) {
+		.success(function(data) {
 			$scope.storyData = data;
 		});
 
