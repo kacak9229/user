@@ -1,0 +1,35 @@
+<div class="container">
+
+    <div class="center-form panel">
+      <div class="panel-body">
+        <h4 class="text-center"><i class="ion-log-in"></i> Log in</h4>
+
+        <form name="loginForm" ng-submit="login.doLogin()" novalidate>
+
+
+
+          <div class="form-group has-feedback">
+            <input server-error class="form-control input-lg" type="text" name="username" ng-model="login.loginData.username" placeholder="Username" required autofocus>
+            <span class="ion-at form-control-feedback"></span>
+             
+          </div>
+
+          <div class="form-group has-feedback">
+            <input server-error class="form-control input-lg" type="password" name="password" ng-model="login.loginData.password" placeholder="Password" required>
+            <span class="ion-key form-control-feedback"></span>
+          </div>
+
+          <button type="submit" class="btn btn-block btn-success">Log in</button>
+
+          <br/>
+
+          <p class="text-center text-muted">
+            <small>Don't have an account yet? <a href="/signup">Sign up</a></small>
+          </p>
+
+        </form>
+
+      </div>
+    </div>
+
+</div>

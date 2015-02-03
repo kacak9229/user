@@ -1,0 +1,34 @@
+<div class="container">
+
+  <div class="center-form panel">
+    <div class="panel-body">
+      <h4 class="text-center"><i class="ion-person-add"></i> Sign up</h4>
+      <form method="post" ng-submit="user.saveUser()" name="signupForm">
+        
+        <div class="form-group has-feedback">
+           <input class="form-control input-lg" type="name" name="name" ng-model="user.userData.name" placeholder="Name" required>
+          <span class="ion-at form-control-feedback"></span>
+        </div>
+
+
+        <div class="form-group has-feedback">
+           <input class="form-control input-lg" type="username" name="username" ng-model="user.userData.username" placeholder="Username" required>
+          <span class="ion-at form-control-feedback"></span>
+        </div>
+
+        <div class="form-group has-feedback">
+           <input class="form-control input-lg" type="password" name="password" ng-model="user.userData.password" placeholder="Password" required>
+          <span class="ion-at form-control-feedback"></span>
+        </div>
+
+        <p class="text-center text-muted"><small>By clicking on Sign up, you agree to <a href="#">terms & conditions</a> and <a href="#">privacy policy</a></small></p>
+
+        <button type="submit" class="btn btn-block btn-primary">Sign up</button>
+        <br/>
+
+        <p class="text-center text-muted"><small>Already have an account? <a href="/login">Log in now</a></small></p>
+      </form>
+    </div>
+  </div>
+
+</div>
