@@ -9,14 +9,14 @@ angular.module('mainCtrl', [])
 
 	// check to see if a user is logged in on every request
 	$rootScope.$on('$routeChangeStart', function() {
-		vm.loggedIn = Auth.isLoggedIn();
-	});
+		vm.loggedIn = Auth.isLoggedIn();	
 
-	// get user information on page load
-	Auth.getUser()
-		.then(function(data) {
-			vm.user = data.data;
-		});
+		// get user information on page load
+		Auth.getUser()
+			.then(function(data) {
+				vm.user = data.data;
+			});	
+	});	
 
 	// function to handle login form
 	vm.doLogin = function() {

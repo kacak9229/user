@@ -30,7 +30,7 @@ angular.module('storyCtrl', ['storyService'])
 				vm.storyData = {}
 				vm.message = data.message;
 
-				vm.stories.push(data);
+				$scope.stories.push(data);
 			});
 	};
 

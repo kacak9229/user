@@ -12,7 +12,7 @@ angular.module('storyService', [])
               url: url,
               headers: {
                 'x-access-token': $window.localStorage.getItem('token')
-              }
+              },
           	}
 
             if(method === 'POST') {
