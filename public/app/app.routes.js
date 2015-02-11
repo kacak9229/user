@@ -13,7 +13,8 @@ angular.module('appRoutes', ['ngRoute'])
 			templateUrl: 'app/views/pages/signup.html',
 			controller: 'UserCreateController',
 			controllerAs: 'user'
-		})		
+		})	
+
 		// login page
 		.when('/login', {
 			templateUrl : 'app/views/pages/login.html',
@@ -28,9 +29,9 @@ angular.module('appRoutes', ['ngRoute'])
 			controllerAs : 'user'
 		})
 
-
-		.when('/:user_id', {
-			templateUrl: 'app/views/pages/users/single.html',
+	
+		.when('/users/:user_id', {
+			templateUrl: 'app/views/pages/users/singleUser.html',
 			controller: 'UserEditController',
 			controllerAs: 'user'
 		})
@@ -41,10 +42,16 @@ angular.module('appRoutes', ['ngRoute'])
 			controllerAs: 'story'
 		})
 
+		.when('/allStories', {
+			templateUrl : 'app/views/pages/allStories.html',
+			controller: 'AllStoryController',
+			controllerAs: 'story'
+		})
+
+
 		.when('/logout', {
 			templateUrl: 'app/views/pages/logout.html',
-		})
-		.otherwise('/');
+		});
 		
 		// show all users
 	$locationProvider.html5Mode(true);
