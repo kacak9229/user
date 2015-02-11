@@ -22,18 +22,18 @@
 						<span class="label label-info">
 							78</span>
 						</div>
-						<div class="panel-body" ng-repeat="story in stories | reverse" >
+						<div class="panel-body" ng-repeat="each in story.stories | reverse" >
 							<ul class="list-group">
 								<li class="list-group-item">
 									<div class="row">
 										<div class="col-xs-10 col-md-11">
 											<div>
 												<div class="mic-info">
-													 {{ story.createdAt | date:'MMM d, yyyy' }}
+													 {{ each.createdAt | date:'MMM d, yyyy' }}
 												</div>
 											</div>
 											<div class="comment-text">
-												<a href="/{{ story._id }}"><h4>{{ story.content }}</h4></a>
+												<a href="/{{ story._id }}"><h4>{{ each.content }}</h4></a>
 											</div>
 										</div>
 									</div>

@@ -8,13 +8,13 @@ angular.module('storyCtrl', ['storyService'])
 
 	Story.all()
 	.success(function(data) {
-		$scope.stories = data;
+		vm.stories = data;
 	});
 
 
 	Story.getSingleStory($routeParams.user_name, $routeParams.story_id)
 	.success(function(data) {
-		$scope.storyData = data;
+		vm.storyData = data;
 	});
 
 	vm.createStory = function() {
@@ -33,8 +33,8 @@ angular.module('storyCtrl', ['storyService'])
 				
 			});
 
-		socketio.on('story', function (msg) {
-				$scope.stories.push(msg);
+		socketio.on('story', function (data) {
+				vm.stories.push(data);
 		});
 				
 	};
@@ -42,13 +42,13 @@ angular.module('storyCtrl', ['storyService'])
 })
 
 
-.controller('AllStoryController', function(Story, $scope) {
+.controller('AllStoryController', function(Story) {
 
 	var vm = this;
 
 	Story.allStories()
 	.success(function(data) {
-		$scope.stories = data;
+		vm.stories = data;
 	})
 
 })

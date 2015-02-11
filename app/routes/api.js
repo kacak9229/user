@@ -42,7 +42,11 @@ module.exports = function(app, express, io) {
 				return;
 			}
 
-			io.emit('story', req.body.content);
+			io.emit('story', {
+				user: req.decoded.id,
+				createdAt: new Date(),
+				content: req.body.content
+			});
 			res.json({ message: 'Story has been created!'});
 			
 		});
