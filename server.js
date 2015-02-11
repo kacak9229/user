@@ -7,6 +7,10 @@ var bodyParser	= require('body-parser');
 var path		= require('path');
 var config		= require('./config');
 
+// REAL TIME WORK
+var http 		= require('http').Server(app);
+var io 			= require('socket.io')(http);
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -33,7 +37,7 @@ mongoose.connect(config.database, function(err) {
 // set our static files to a designated location
 app.use(express.static(__dirname + '/public'));
 
-var apiRouter = require('./app/routes/api') (app, express);
+var apiRouter = require('./app/routes/api') (app, express, io);
 app.use('/api', apiRouter);
 
 // registered before your api routes.
@@ -41,7 +45,10 @@ app.get('*', function(req, res) {
 	res.sendFile(path.join(__dirname + '/public/app/views/index.html'));
 });
 
-app.listen(config.port);
-console.log("App listen on port " + config.port);
-
-
+http.listen(config.port, function(err) {
+    if(err) {
+    	console.log("There's an error connecting the app to port" + config.port);
+    } else {
+    	console.log("App is listening on port " + config.port);
+    }
+});

@@ -44,7 +44,7 @@ angular.module('userCtrl', ['userService'])
 
 	var vm = this;
 
-
+	
 	// function to create a user
 	vm.saveUser = function() {
 		vm.processing = true;

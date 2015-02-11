@@ -2,20 +2,20 @@
 angular.module('storyCtrl', ['storyService'])
 
 
-.controller('StoryController', function(Story, $routeParams, $scope) {
+.controller('StoryController', function(Story, $routeParams, $scope, socketio) {
 
 	var vm = this;
 
 	Story.all()
-		.success(function(data) {
-			$scope.stories = data;
-		});
+	.success(function(data) {
+		$scope.stories = data;
+	});
 
 
 	Story.getSingleStory($routeParams.user_name, $routeParams.story_id)
-		.success(function(data) {
-			$scope.storyData = data;
-		});
+	.success(function(data) {
+		$scope.storyData = data;
+	});
 
 	vm.createStory = function() {
 		
@@ -23,15 +23,33 @@ angular.module('storyCtrl', ['storyService'])
 		vm.message = '';
 
 		Story.create(vm.storyData) 
-			.success(function(data) {
-				
-				
+		.success(function(data) {
+			
+			
 				// clear the form
 				vm.storyData = {}
 				vm.message = data.message;
 
-				$scope.stories.push(data);
+				
 			});
+
+		socketio.on('story', function (msg) {
+				$scope.stories.push(msg);
+		});
+				
 	};
 
-});
+})
+
+
+.controller('AllStoryController', function(Story, $scope) {
+
+	var vm = this;
+
+	Story.allStories()
+	.success(function(data) {
+		$scope.stories = data;
+	})
+
+})
+

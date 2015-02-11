@@ -21,31 +21,32 @@ var createToken = function(user) {
 }
 
 
-var createStory = function(req, res) {
+
+module.exports = function(app, express, io) {
+
+	// creating our first router
+	var apiRouter = express.Router();
+
+	// signup a user
+	var createStory = function(req, res) {
 	
 		var story = new Story({
 			user: req.decoded.id,
 			content: req.body.content
 		});
 
-		story.save(function(err, sto) {
+		story.save(function(err) {
 
 			if(err) {
 				res.send(err);
 				return;
 			}
 
-			res.json(sto);
+			io.emit('story', req.body.content);
+			res.json({ message: 'Story has been created!'});
 			
 		});
 	};
-
-module.exports = function(app, express) {
-
-	// creating our first router
-	var apiRouter = express.Router();
-
-	// signup a user
 	
 
 	apiRouter.post('/signup', function(req, res) {
@@ -82,6 +83,20 @@ module.exports = function(app, express) {
 		});
 
 	});
+
+
+
+		apiRouter.get('/all_stories', function(req, res) {
+
+			Story.find({} , function(err, stories) {
+				if(err) {
+					res.send(err);
+					return;
+				}
+
+				res.json(stories);
+			});
+		});
 
 
 
@@ -159,7 +174,10 @@ module.exports = function(app, express) {
 		.get(function(req, res) {
 
 			Story.find({ user: req.decoded.id }, function(err, story) {
-				if(err) res.send(err);
+				if(err) {
+					res.send(err);
+					return;
+				}
 
 				res.json(story);
 			});
@@ -167,18 +185,10 @@ module.exports = function(app, express) {
 
 		});
 
-
-
-	apiRouter.route('/me')
-
-		.get(function(req, res) {
-			res.json(req.decoded);
-
-		})
-
-		.post(createStory);
-
-
+	
+	apiRouter.get('/me', function(req, res) {
+			res.send(req.decoded);
+	});
 
 
 	apiRouter.route('/:user_id')
@@ -254,6 +264,9 @@ module.exports = function(app, express) {
 				});
 			});
 		});
+
+
+
 
 
 	return apiRouter;

@@ -13,6 +13,7 @@ angular.module('storyService', [])
               headers: {
                 'x-access-token': $window.localStorage.getItem('token')
               },
+              cache: false
           	}
 
             if(method === 'POST') {
@@ -34,6 +35,36 @@ angular.module('storyService', [])
 		return $http(generateReq('GET', '/api/' + user_name + '/' + story_id));
 	};
 
+	storyFactory.allStories = function() {
+		return $http(generateReq('GET', '/api/all_stories'));
+	};
+
 	return storyFactory;
 
-});
+})
+
+
+.factory('socketio', ['$rootScope', function ($rootScope) {
+        
+        var socket = io.connect();
+        return {
+            on: function (eventName, callback) {
+                socket.on(eventName, function () {
+                    var args = arguments;
+                    $rootScope.$apply(function () {
+                        callback.apply(socket, args);
+                    });
+                });
+            },
+            emit: function (eventName, data, callback) {
+                socket.emit(eventName, data, function () {
+                    var args = arguments;
+                    $rootScope.$apply(function () {
+                        if (callback) {
+                            callback.apply(socket, args);
+                        }
+                    });
+                });
+            }
+        };
+    }]);
