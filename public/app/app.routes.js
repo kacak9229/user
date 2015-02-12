@@ -36,16 +36,28 @@ angular.module('appRoutes', ['ngRoute'])
 			controllerAs: 'user'
 		})
 
-		.when('/:user_name/:story_id', {
+		.when('/allStories', {
+			templateUrl : 'app/views/pages/allStories.html',
+			controller: 'AllStoryController',
+			controllerAs: 'story',
+			resolve: {
+				stories: function(Story) {
+					return Story.allStories();
+				}
+			}
+
+		})
+
+		.when('/:story_id', {
 			templateUrl: 'app/views/pages/users/single.html',
 			controller: 'StoryController',
 			controllerAs: 'story'
 		})
 
-		.when('/allStories', {
-			templateUrl : 'app/views/pages/allStories.html',
-			controller: 'AllStoryController',
-			controllerAs: 'story'
+		.when('/:user_id', {
+			templateUrl: 'app/views/pages/users/single2.html',
+			controller: 'FollowAndUnfollowController',
+			controllerAs: 'followOrUnfollow'
 		})
 
 

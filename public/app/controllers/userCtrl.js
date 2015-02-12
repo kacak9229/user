@@ -63,10 +63,8 @@ angular.module('userCtrl', ['userService'])
 
 				$window.localStorage.setItem('token', response.data.token);
 				$location.path('/');
-	 
-
 		});
-
+			
 	};
 
 })
@@ -102,5 +100,35 @@ angular.module('userCtrl', ['userService'])
 
 			});
 	};
+
+})
+
+.controller('FollowAndUnfollowController', function($routeParams, User) {
+
+
+	var vm = this;
+
+	vm.type1 = "follow";
+	vm.type2 = "unfollow";
+	
+	vm.setFollow = function() {
+		if(vm.type1) {
+
+			User.follow($routeParams.id)
+			.success(function(data) {
+				vm.message = message;
+
+			})
+
+
+		} else if(vm.type2) {
+
+			User.unfollow($routeParams.id)
+			.success(function(data) {
+				vm.message = data.message;
+			});
+		}
+	}
+
 
 });

@@ -31,8 +31,8 @@ angular.module('storyService', [])
 		return $http(generateReq('POST', '/api/', storyData));
 	};
 
-	storyFactory.getSingleStory = function(user_name, story_id) {
-		return $http(generateReq('GET', '/api/' + user_name + '/' + story_id));
+	storyFactory.getSingleStory = function(story_id) {
+		return $http(generateReq('GET', '/api/' + story_id));
 	};
 
 	storyFactory.allStories = function() {

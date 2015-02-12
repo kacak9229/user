@@ -28,29 +28,20 @@ module.exports = function(app, express, io) {
 	var apiRouter = express.Router();
 
 	// signup a user
-	var createStory = function(req, res) {
 	
-		var story = new Story({
-			user: req.decoded.id,
-			content: req.body.content
-		});
 
-		story.save(function(err) {
 
-			if(err) {
-				res.send(err);
-				return;
-			}
+	apiRouter.get('/all_stories', function(req, res) {
 
-			io.emit('story', {
-				user: req.decoded.id,
-				createdAt: new Date(),
-				content: req.body.content
+			Story.find({} , function(err, stories) {
+				if(err) {
+					res.send(err);
+					return;
+				}
+
+				res.json(stories);
 			});
-			res.json({ message: 'Story has been created!'});
-			
 		});
-	};
 	
 
 	apiRouter.post('/signup', function(req, res) {
@@ -87,21 +78,6 @@ module.exports = function(app, express, io) {
 		});
 
 	});
-
-
-
-		apiRouter.get('/all_stories', function(req, res) {
-
-			Story.find({} , function(err, stories) {
-				if(err) {
-					res.send(err);
-					return;
-				}
-
-				res.json(stories);
-			});
-		});
-
 
 
 	// user login
@@ -172,7 +148,31 @@ module.exports = function(app, express, io) {
 
 	apiRouter.route('/')
 
-		.post(createStory)
+		.post(function(req, res) {
+	
+		var story = new Story({
+			user: req.decoded.id,
+			content: req.body.content
+		});
+
+		story.save(function(err) {
+
+			if(err) {
+				res.send(err);
+				return;
+			}
+
+			io.emit('story', {
+				user: req.decoded.id,
+				createdAt: new Date(),
+				content: req.body.content
+			});
+			res.json({ message: 'Story has been created!'});
+			
+		})
+
+	})
+	
 
 
 		.get(function(req, res) {
@@ -189,11 +189,24 @@ module.exports = function(app, express, io) {
 
 		});
 
-	
 	apiRouter.get('/me', function(req, res) {
-			res.send(req.decoded);
+		res.send(req.decoded);
 	});
 
+
+	apiRouter.get('/:story_id', function(req, res) {
+
+			Story.findById(req.params.story_id, function(err, story) {
+				if(err) {
+					res.send(err);
+					return;
+				}
+
+				res.json(story);
+			});
+		});
+
+	
 
 	apiRouter.route('/:user_id')
 
@@ -201,7 +214,10 @@ module.exports = function(app, express, io) {
 		.get(function(req, res) {
 
 			User.findById(req.params.user_id, function(err, user) {
-				//if(err) res.send(err);
+				if(err) {
+					res.send(err);
+					return;
+				}
 
 				res.json(user);
 
@@ -210,7 +226,7 @@ module.exports = function(app, express, io) {
 
 		})
 
-		.post(createStory)
+		
 
 		.put(function(req, res) {
 
@@ -244,35 +260,68 @@ module.exports = function(app, express, io) {
 		});
 
 
-		apiRouter.get('/:user_name/:story_id', function(req, res) {
+	apiRouter.post('/follow/:user_id', function(req, res) {
 
-			User.findOne({ name: req.params.user_name }, function(err, user, next) {
+		// find a current user that has logged in
+			User.update(
+				{   
+					_id: req.decoded.id, 
+					following: { $ne: req.params.user_id } 
+				}, 
 
-				if(err) return next(err);
+				{ 
+					$push: { following: req.params.user_id},
+					$inc: { followingCount: 1}
 
-				Story.findById(req.params.story_id, function(err, story) {
-
-					if(err) {
+				},
+				function(err) {
+					if (err) {
 						res.send(err);
 						return;
 					}
-
-					res.json({
-						name: user.name,
-						story_id: story._id,
-						content: story.content
-
-					});
-
 					
-				});
+					User.update(
+						{
+							_id: req.params.user_id,
+							followers: { $ne: req.decoded.id }
+						},
+
+						{	
+							$push: { followers: req.decoded.id },
+							$inc: { followersCount: 1}
+
+						}
+
+					), function(err) {
+						if(err) return res.send(err);
+
+						res.json({ message: "Successfully Followed!" });
+					}
+
 			});
+	});
+
+	apiRouter.post('/unfollow/:user_id', function(req, res) {
+
+		User.update({
+			_id: req.decoded.id,
+			following: req.params.user_id
+		}, {
+			$pull: { following: req.params.user_id },
+			$inc: { followingCount: -1}
+		}, function(err, user) {
+			if(err) {
+				res.send(err);
+				return;
+			}
+
+			res.json({ message: "Successfully Un- followed!" });
 		});
+	});
 
-
-
-
-
+		
 	return apiRouter;
 
 }
+
+

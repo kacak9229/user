@@ -24,6 +24,14 @@ angular.module('userService', [])
 		return $http.put('/api/' + id, userData);
 	}
 
+	userFactory.follow = function(id) {
+		return $http.post('/api/follow/' + id);
+	}
+
+	userFactory.unfollow = function(id) {
+		return $http.post('/api/unfollow/' + id);
+	}
+
 	return userFactory;
 });
 

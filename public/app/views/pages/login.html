@@ -21,7 +21,14 @@
 
           <button type="submit" class="btn btn-block btn-success">Log in</button>
 
+
+
           <br/>
+
+           <div class="alert alert-danger" ng-if="login.error">
+            {{ login.error }}
+          </div>
+
 
           <p class="text-center text-muted">
             <small>Don't have an account yet? <a href="/signup">Sign up</a></small>

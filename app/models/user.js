@@ -8,7 +8,10 @@ var UserSchema = new Schema({
 	name: String,
 	username: { type: String, required: true, index: { unique: true }},
 	password: { type: String, required: true, select: false },
-	// stories: [StorySchema]
+	followers: [{ type: Schema.Types.ObjectId, ref: 'User'}],
+    following: [{ type: Schema.Types.ObjectId, ref: 'User'}],
+    followersCount: Number,
+    followingCount: Number
 	
 });
 
