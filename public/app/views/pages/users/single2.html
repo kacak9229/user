@@ -1,12 +1,15 @@
+
+<h1>{{ user.singleUser.name }}</h1>
 <div class="row">
 
 			<div class="panel panel-primary">
 
-				<div class="panel-heading"><h4 class="hColor">Write your Story</h4></div>
-				<div class="panel-body">
-					<form ng-submit="story.createStory()">	
+				<div class="panel-heading"><h4 class="hColor">{{ user.singleUser.name }}</h4></div>
+				<div class="panel-body" ng-controller="FollowAndUnfollowController as set">
+					<form>	
 						<button type="submit" class="btn btn-block btn-success">follow</button>
-						<button ng-click="setFollow()">{{ Follow }}</button>
+						<button ng-click="set.follow('user.singleUser._id')">Follow</button>
+
 					</form>
 				</div>
 

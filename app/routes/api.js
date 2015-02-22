@@ -1,6 +1,7 @@
 var User 		= require('../models/user');
 var Story 		= require('../models/story');
 var jwt 		= require('jsonwebtoken');
+var async		= require('async');
 var config		= require('../../config');
 
 
@@ -155,18 +156,14 @@ module.exports = function(app, express, io) {
 			content: req.body.content
 		});
 
-		story.save(function(err) {
+		story.save(function(err, newStory) {
 
 			if(err) {
 				res.send(err);
 				return;
 			}
-
-			io.emit('story', {
-				user: req.decoded.id,
-				createdAt: new Date(),
-				content: req.body.content
-			});
+			console.log(newStory);
+			io.emit('story', newStory);
 			res.json({ message: 'Story has been created!'});
 			
 		})
@@ -194,7 +191,7 @@ module.exports = function(app, express, io) {
 	});
 
 
-	apiRouter.get('/:story_id', function(req, res) {
+	apiRouter.get('/stories/:story_id', function(req, res) {
 
 			Story.findById(req.params.story_id, function(err, story) {
 				if(err) {
@@ -218,7 +215,7 @@ module.exports = function(app, express, io) {
 					res.send(err);
 					return;
 				}
-
+				console.log(user);
 				res.json(user);
 
 			});
@@ -257,67 +254,56 @@ module.exports = function(app, express, io) {
 
 			});
 
-		});
-
-
-	apiRouter.post('/follow/:user_id', function(req, res) {
-
-		// find a current user that has logged in
-			User.update(
-				{   
-					_id: req.decoded.id, 
-					following: { $ne: req.params.user_id } 
-				}, 
-
-				{ 
-					$push: { following: req.params.user_id},
-					$inc: { followingCount: 1}
-
-				},
-				function(err) {
-					if (err) {
-						res.send(err);
-						return;
-					}
-					
-					User.update(
-						{
-							_id: req.params.user_id,
-							followers: { $ne: req.decoded.id }
-						},
-
-						{	
-							$push: { followers: req.decoded.id },
-							$inc: { followersCount: 1}
-
-						}
-
-					), function(err) {
-						if(err) return res.send(err);
-
-						res.json({ message: "Successfully Followed!" });
-					}
-
-			});
 	});
 
-	apiRouter.post('/unfollow/:user_id', function(req, res) {
 
-		User.update({
-			_id: req.decoded.id,
-			following: req.params.user_id
-		}, {
-			$pull: { following: req.params.user_id },
-			$inc: { followingCount: -1}
-		}, function(err, user) {
-			if(err) {
-				res.send(err);
-				return;
-			}
+	//follow user api
+	// apiRouter.post('/follow/:user_id', function(req, res) {
+	// 	User.findOneAndUpdate(
+	// 	{   
 
-			res.json({ message: "Successfully Un- followed!" });
-		});
-	});
+	// 		_id: req.decoded.id, 
+	// 		following: { $ne: req.params.user_id }
+	// 	}, 
+
+	// 	{ 
+	// 		$push: { following: req.params.user_id},
+	// 		$inc: { followingCount: 1}
+
+	// 	},
+	// 	function(err, currentUser) {
+	// 		if (err) {
+	// 			res.send(err);
+	// 			return;
+	// 		}
+	// 		console.log(currentUser);
+
+	// 	});
+	// 	User.findOneAndUpdate(
+	// 	{
+
+	// 		_id: req.params.user_id,
+	// 		followers: { $ne: req.decoded.id } 
+
+	// 	},
+
+	// 	{
+	// 		$push: { followers: req.decoded.id },
+	// 		$inc: { followersCount: 1}
+
+	// 	}, function(err, user) {
+	// 		if(err) {
+	// 			res.send(err);
+	// 			return;
+	// 		}
+	// 		res.json({
+	// 			message: "Successfully followed"
+	// 		});
+	// 	}
+	// 	)
+	// });
+
+	
 
 		
 	return apiRouter;

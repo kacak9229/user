@@ -103,6 +103,17 @@ angular.module('userCtrl', ['userService'])
 
 })
 
+.controller('SingleUserController', function($routeParams, User) {
+	
+	var vm = this;
+
+	User.get($routeParams.user_id)
+		.success(function(data) {
+			vm.singleUser = data;
+		})
+})
+
+
 .controller('FollowAndUnfollowController', function($routeParams, User) {
 
 
@@ -116,7 +127,7 @@ angular.module('userCtrl', ['userService'])
 
 			User.follow($routeParams.id)
 			.success(function(data) {
-				vm.message = message;
+				vm.user = data.data;
 
 			})
 
@@ -125,10 +136,19 @@ angular.module('userCtrl', ['userService'])
 
 			User.unfollow($routeParams.id)
 			.success(function(data) {
-				vm.message = data.message;
+				vm.user = data.data;
 			});
 		}
 	}
+
+	vm.follow = function(id) {
+
+		User.follow($routeParams.id)
+			.success(function(data) {
+				//
+			});
+	}
+
 
 
 });

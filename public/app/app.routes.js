@@ -9,6 +9,7 @@ angular.module('appRoutes', ['ngRoute'])
 			templateUrl : 'app/views/pages/home.html'
 		})
 
+
 		.when('/signup', {
 			templateUrl: 'app/views/pages/signup.html',
 			controller: 'UserCreateController',
@@ -29,7 +30,7 @@ angular.module('appRoutes', ['ngRoute'])
 			controllerAs : 'user'
 		})
 
-	
+
 		.when('/users/:user_id', {
 			templateUrl: 'app/views/pages/users/singleUser.html',
 			controller: 'UserEditController',
@@ -48,18 +49,17 @@ angular.module('appRoutes', ['ngRoute'])
 
 		})
 
-		.when('/:story_id', {
+		.when('/stories/:story_id', {
 			templateUrl: 'app/views/pages/users/single.html',
 			controller: 'StoryController',
-			controllerAs: 'story'
+			controllerAs: 'story',
 		})
 
-		.when('/:user_id', {
+		.when('/single/:user_id', {
 			templateUrl: 'app/views/pages/users/single2.html',
-			controller: 'FollowAndUnfollowController',
-			controllerAs: 'followOrUnfollow'
+			controller: 'SingleUserController',
+			controllerAs: 'user'
 		})
-
 
 		.when('/logout', {
 			templateUrl: 'app/views/pages/logout.html',

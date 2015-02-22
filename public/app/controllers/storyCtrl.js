@@ -9,6 +9,7 @@ angular.module('storyCtrl', ['storyService'])
 
     Story.all()
     .success(function(data) {
+
         vm.stories = data;
     });
 
@@ -38,6 +39,13 @@ angular.module('storyCtrl', ['storyService'])
 .controller('AllStoryController', function(socketio, stories) {
 
 	var vm = this;
+
+
+    vm.totalDisplayed = 10;
+
+    vm.loadMore = function() {
+        vm.totalDisplayed += 10;
+    }
 
 	vm.stories = stories.data;
 

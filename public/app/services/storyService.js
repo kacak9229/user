@@ -32,7 +32,7 @@ angular.module('storyService', [])
 	};
 
 	storyFactory.getSingleStory = function(story_id) {
-		return $http(generateReq('GET', '/api/' + story_id));
+		return $http(generateReq('GET', '/api/stories/' + story_id));
 	};
 
 	storyFactory.allStories = function() {
